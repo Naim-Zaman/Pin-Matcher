@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+        <!--Start Here Using pin id-->            
+                    <input id="pin" class="form-control" type="text">
+        <!--End Here Using pin id-->                  
+                    <button onclick="generatePin()" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+
+        <!--start id-"typed-pin" here digit input -->                     
+                    <input id="typed-pin" class="form-control" type="text">
+        <!--end id-"typed-pin" here digit input -->      
+
+        <!--start id-"digit-container" here digit button -->                    
+                    <div id="digits-container" class="numbers">
+        <!--end id-"digit-container" here digit button -->  
+
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button">7</div>
+                              <div class="button">8</div>
+                              <div class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">4</div>
+                              <div class="button">5</div>
+                              <div class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">1</div>
+                              <div class="button">2</div>
+                              <div class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button"><</div>
+                                <div class="button">0</div>
+                                <div class="button">C</div>
+                            </div>
+                            <div>
+                <!--Start Submit Button Dynamic-->                                
+                                <button id="verify-Pin" onclick="submit()" type="submit" class="submit-btn">Submit</button>
+                <!--End Submit Button Dynamic-->                                  
+                                <p class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+<!--Start Correct and Incorrect Pin message dynamic-->            
+            <p id="incorrect-pin" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="correct-pin" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+<!--End Correct and Incorrect Pin message dynamic-->                  
+        </div>
+    </div>
+<!--Start Script file-->    
+        <script>
+            function getPin(){
+                const random = Math.random() * 10000;
+                var pin = (random + ' ').split('.')[0];
+
+                //------stoping Condition ***recursive functions***//
+                    if (pin.length === 4) {
+                        return pin;
+                    }
+                    else{
+                        return getPin();
+                    }
+            }
+            //---------Display Generated Pin
+            function generatePin(){
+                const pinInput = document.getElementById('pin');
+                pinInput.value = getPin();
+            }
+
+            //---------Handle Calculator Button event (using Event Bubble Method)
+            const buttonContainer = document.getElementById('digits-container');
+                buttonContainer.addEventListener('click',function(event){
+                    // console.log(event.target.innerText);
+                    var dight = event.target.innerText;
+                        if (isNaN(dight)) {
+                            // handle backspace
+                           //  handle clear
+                          //   console.log('Handle Non Digit');
+                                if (dight === 'C') {
+                                    const typedInput = document.getElementById('typed-pin');
+                                    typedInput.value = ' ';
+                                }
+                        }
+                        else{
+                            // console.log(dight);
+                            const typedInput = document.getElementById('typed-pin');
+                            typedInput.value = typedInput.value + dight;
+                        }
+            })
+            // const varifyPin = document.getElementById('verify-Pin');
+            // varifyPin.addEventListener('click', function(){
+            //     const pin = document.getElementById('pin').value;
+            //     const typedPin = document.getElementById('typed-pin').value;
+            //         if (pin === typedPin) {
+            //             var correct = document.getElementById('correct-pin');
+            //             correct.style.display = "block";
+            //                 console.log('if');
+            //             // var correct = document.getElementById('incorrect-pin');
+            //             // correct.style.display = "none";
+            //         } else {
+            //             // var correct = document.getElementById('correct-pin');
+            //             // correct.style.display = "none";
+            //             var correct = document.getElementById('incorrect-pin');
+            //             correct.style.display = "block";
+            //                 console.log('else');
+                       
+            //         }
+            // })
+            function submit(){
+                const varifyPin = document.getElementById('verify-Pin');
+            varifyPin.addEventListener('click', function(){
+                const pin = document.getElementById('pin').value;
+                const typedPin = document.getElementById('typed-pin').value;
+                    if (pin === typedPin) {
+                        var correct = document.getElementById('correct-pin');
+                        correct.style.display = "block";
+                        console.log('if');
+                        // var correct = document.getElementById('incorrect-pin');
+                        // correct.style.display = "none";
+                    } else {
+                        // var correct = document.getElementById('correct-pin');
+                        // correct.style.display = "none";
+
+                        var correct = document.getElementById('incorrect-pin');
+                        correct.style.display = "block";
+                            console.log('else');
+                    }
+            })
+            }
+
+
+
+            //--------Add Button Handler (Not Working)
+            // function varifyPin(){
+            //     const pin = document.getElementById('pin').value;
+            //     const typedPin = document.getElementById('typed-pin').value;
+            //         if (pin === typedPin) {
+            //             const correct = document.getElementById('correct-pin');
+            //             correct.style.display = "block"
+            //         }
+            //         else{
+            //         }  
+            // }
+            
+
+
+        </script>
+<!--End Script file-->    
+</body>
+</html>
